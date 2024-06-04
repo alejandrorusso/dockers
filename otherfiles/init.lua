@@ -17,6 +17,8 @@ return {
         "vimdoc",
         "haskell",
         "markdown",
+        "latex",
+        "bibtex",
 
         -- web dev
         "html",
@@ -47,6 +49,8 @@ return {
           "lua_ls", -- Lua
           "hls", -- Haskell
           "marksman", -- Markdown
+          "texlab", -- Latex
+          "ltex", -- Grammar checking
         },
         automatic_instalation = true,
       }
@@ -109,5 +113,83 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     version = "*",
     config = true,
+  },
+
+  -- Sessions
+  {
+    "Shatur/neovim-session-manager",
+    event = "VimEnter",
+    config = function()
+      require("session_manager").setup {
+        autoload_mode = require("session_manager.config").AutoloadMode.Disabled, -- CurrentDir,
+      }
+    end,
+  },
+
+  -- Latex
+  {
+    "lervag/vimtex",
+    ft = { "tex" },
+    init = function()
+      vim.g.tex_flavor = "latex"
+      -- vim.g.vimtex_quickfix_mode = 0
+      -- vim.g.vimtex_mappings_enabled = 0
+      -- vim.g.vimtex_indent_enabled = 0
+      --
+      vim.g.vimtex_view_method = "zathura"
+      vim.g.vimtex_context_pdf_viewer = "zathura"
+      vim.g.vimtex_compiler_latexmk = {
+        options = {
+          "-shell-escape",
+        },
+      }
+      -- For xelatex: add the following line at the beginning of the file
+      -- %!TEX TS-program = xelatex
+    end,
+  },
+
+  -- Git
+  {
+    "kdheepak/lazygit.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    keys = {
+      { "<leader>gg", "<cmd>LazyGit<CR>", desc = "Lazy Git" },
+    },
+  },
+
+  -- Multi-cursor
+  {
+    "mg979/vim-visual-multi",
+    lazy = false,
+    branch = "master",
+    init = function()
+      vim.g.VM_maps = {
+        ["Find Under"] = "<C-m>",
+      }
+    end,
+  },
+
+  -- Telescope search for bibtex entries <C-e>
+  {
+    "nvim-telescope/telescope-bibtex.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim" },
+    config = function()
+      require("telescope").load_extension "bibtex"
+    end,
+  },
+
+  -- AI - LLM
+  {
+    "David-Kunz/gen.nvim",
+    lazy = false,
+    opts = {
+      model = "mistral:instruct",
+      -- show_model = true,
+    },
+    -- keys = {
+    --   { "<leader>ww", "<cmd>Gen<CR>", desc = "LLM Prompt" },
+    -- },
   },
 }

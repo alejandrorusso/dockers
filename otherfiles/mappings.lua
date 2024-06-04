@@ -9,7 +9,15 @@ map("i", "jk", "<ESC>")
 
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
 
--- Auto-indent
+-- Session manager
+map("n", "<leader>z", "<cmd> SessionManager <CR>", { desc = "Session manager" })
+
+map("n", "<leader>cv", "<cmd> VimtexView <CR>", { desc = "Tex: View" })
+map("n", "<leader>cl", "<cmd> VimtexCompile <CR>", { desc = "Tex: Compile" })
+
+-- AI
+map({ "n", "v" }, "<leader>ww", ":Gen<CR>", { desc = "LLM Prompt" })
+
 local conform = require "conform"
 
 map({ "n", "v" }, "<leader>mp", function()
